@@ -1,0 +1,27 @@
+{
+  "scripts": {
+    "serve": "vite serve --host 0.0.0.0 --port 8080 --debug --logLevel info --config vite.config.js src"
+  },
+  "dependencies": {
+    "@b9g/crank": "^0.7.8",
+    "axios": "^1.13.6",
+    "extensible-runtime": "^4.1.0",
+    "hyphen": "^1.14.1",
+    "immutable": "^5.1.5",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.29.0",
+    "@babel/plugin-proposal-do-expressions": "^7.28.6",
+    "@babel/plugin-proposal-function-bind": "^7.27.1",
+    "@babel/plugin-syntax-jsx": "^7.28.6",
+    "@babel/preset-env": "^7.29.2",
+    "babel-plugin-extensible-destructuring": "^4.3.1",
+    "vite-plugin-babel": "^1.6.0",
+    "vite-plugin-ignore-public": "^0.0.3",
+    "vite-require": "^0.2.3"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.60.0"
+  }
+}

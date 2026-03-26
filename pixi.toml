@@ -1,0 +1,19 @@
+[workspace]
+authors = ["Cameron Riddell <cameron@dutc.io>"]
+channels = ["conda-forge"]
+name = "project"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+backend = { cmd = "uvicorn app:app", cwd = "backend" }
+frontend-install = { cmd = "npm install", cwd = "frontend/" }
+frontend = { cmd = "npm run serve", depends-on = ["frontend-install"], cwd = "frontend/" }
+app = { cmd = "bash app.sh", depends-on = ["frontend-install"]}
+
+[dependencies]
+python = ">=3.14.3,<3.15"
+pandas = ">=3.0.1,<4"
+fastapi = ">=0.135.2,<0.136"
+aiosqlite = ">=0.22.1,<0.23"
+nodejs = ">=25.7.0,<25.8"

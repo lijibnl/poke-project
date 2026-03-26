@@ -1,0 +1,9 @@
+# pixi environments
+.pixi/*
+!.pixi/config.toml
+.cache
+
+node_modules
+__pycache__
+game.etilqs
+
