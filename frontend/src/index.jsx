@@ -46,6 +46,32 @@ async function *Catcher() {
     const options = do {
         try {
             const { data : { names } } = await axios.get('/api/names')
+            const first = names[0]
+            if (first) {
+                const { data : { info } } = await axios.get(`/api/info/${first}`)
+                infoBox = <>
+                    <style>{`
+                        dl#info-box {
+                            display: grid;
+                            grid-template-columns: 33% auto;
+                            min-width: 50%;
+                        }
+                        dl#info-box dt {
+                            font-weight: bold;
+                            grid-column: 1;
+                        }
+                        dl#info-box dd {
+                            grid-column: 2;
+                        }
+                    `}</style>
+                    <dl id="info-box">
+                        { fromJS(info).entrySeq().map(([k, v]) => [
+                            <dt>{ k }</dt>,
+                            <dd>{ v }</dd>
+                        ]).flatten() }
+                    </dl>
+                </>
+            }
             fromJS(names).map(x => <option key={ x } value={ x }>{ x }</option>)
         } catch(e) { console.log({ e }) }
     }
