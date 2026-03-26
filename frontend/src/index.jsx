@@ -6,7 +6,8 @@ function Listing({ monsters }) {
     const rows = do {
         monsters.entrySeq().map(([k, v]) => <tr>
             <td>{ k }</td>
-            <td>{ v }</td>
+            <td>{ v.get('count') }</td>
+            <td>{ v.get('timestamp') }</td>
         </tr>)
     }
     return <>
@@ -24,6 +25,7 @@ function Listing({ monsters }) {
                 <tr>
                     <th>Name</th>
                     <th>Count</th>
+                    <th>Timestamp (last caught)</th>
                 </tr>
             </thead>
             <tbody>{ rows }</tbody>
@@ -32,7 +34,12 @@ function Listing({ monsters }) {
 }
 
 async function *Catcher() {
-    let monsters = Map()
+    let monsters = do {
+        try {
+            const { data : { caught } } = await axios.get(`/api/caught`)
+            fromJS(caught)
+        } catch(e) { console.log({ e }); Map() }
+    }
     let selected;
     let infoBox = <i>Select a Pokémon</i>
 

@@ -24,6 +24,7 @@ async def lifespan(app):
             create table if not exists caught (
                 name text primary key
               , count integer
+              , timestamp text
             )
         '''))
         await game.commit()
@@ -96,9 +97,9 @@ async def catch(monster : Monster, request : Request):
         return {'status': False}
     async with request.state.db.game.cursor() as cur:
         await cur.execute(dedent('''
-            insert into caught (name, count) values (:name, 1)
-            on conflict(name) do update set count = count + 1
-        '''), {'name': monster.name.casefold()})
+            insert into caught (name, count, timestamp) values (:name, 1, :timestamp)
+            on conflict(name) do update set count = count + 1, timestamp = :timestamp
+        '''), {'name': monster.name.casefold(), 'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
         await request.state.db.game.commit()
     return {'status': True}
 
@@ -106,13 +107,13 @@ async def catch(monster : Monster, request : Request):
 async def caught(request : Request):
     async with request.state.db.game.cursor() as cur:
         await cur.execute(dedent('''
-            select name, count from caught
+            select name, count, timestamp from caught
         '''))
         return {
             'status': True,
             'caught': {
-                name: count
-                async for name, count in cur
+                name: {'count': count, 'timestamp': timestamp}
+                async for name, count, timestamp in cur
                 if count > 0
             },
         }
